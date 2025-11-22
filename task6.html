@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contact Form with Validation</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 30px;
+  }
+  form {
+    width: 300px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    border: 1px solid #999;
+    border-radius: 3px;
+  }
+  textarea {
+    resize: vertical;
+    height: 80px;
+  }
+  .error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 2px;
+  }
+  .success-message {
+    color: green;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+  button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #007BFF;
+    border: none;
+    color: white;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+
+<form id="contactForm" novalidate>
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" />
+  <div id="nameError" class="error-message"></div>
+
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" />
+  <div id="emailError" class="error-message"></div>
+
+  <label for="message">Message</label>
+  <textarea id="message" name="message"></textarea>
+  <div id="messageError" class="error-message"></div>
+
+  <button type="submit">Submit</button>
+  <div id="successMessage" class="success-message"></div>
+</form>
+
+<script>
+  const form = document.getElementById('contactForm');
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const messageInput = document.getElementById('message');
+
+  const nameError = document.getElementById('nameError');
+  const emailError = document.getElementById('emailError');
+  const messageError = document.getElementById('messageError');
+  const successMessage = document.getElementById('successMessage');
+
+  function validateEmail(email) {
+    // Simple regex for email validation
+    const re = /^[^s@]+@[^s@]+.[^s@]+$/;
+    return re.test(email);
+  }
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Reset previous messages
+    nameError.textContent = '';
+    emailError.textContent = '';
+    messageError.textContent = '';
+    successMessage.textContent = '';
+
+    let valid = true;
+
+    // Validate Name
+    if (nameInput.value.trim() === '') {
+      nameError.textContent = 'Name is required.';
+      valid = false;
+    }
+
+    // Validate Email
+    if (emailInput.value.trim() === '') {
+      emailError.textContent = 'Email is required.';
+      valid = false;
+    } else if (!validateEmail(emailInput.value.trim())) {
+      emailError.textContent = 'Please enter a valid email address.';
+      valid = false;
+    }
+
+    // Validate Message
+    if (messageInput.value.trim() === '') {
+      messageError.textContent = 'Message is required.';
+      valid = false;
+    }
+
+    if (valid) {
+      successMessage.textContent = 'Form submitted successfully!';
+      form.reset(); // Clear form fields
+    }
+  });
+</script>
+
+</body>
+</html>
